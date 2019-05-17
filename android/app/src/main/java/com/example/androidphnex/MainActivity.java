@@ -85,11 +85,11 @@ public class MainActivity extends FlutterActivity
                     @Override
                     public void onMethodCall(MethodCall call, Result result) {//TODO
                     Toast.makeText(MainActivity.this, "Started theMethodChannel ", Toast.LENGTH_SHORT).show();
-                      if (call.method.equals("getBatteryLevel")) {
-                        int batteryLevel = getBatteryLevel();
+                      if (call.method.equals("androidphone")) {
+                        int batteryLevel = TelPhoneCall();
 
-                        if (batteryLevel != -1) {
-                          result.success(batteryLevel);
+                        if (phonestate != -1) {
+                          result.success(phonestate);
                         } else {
                           result.error("UNAVAILABLE", "AndroidPhone not available.", null);
                         }
@@ -103,16 +103,15 @@ public class MainActivity extends FlutterActivity
   }
 
 
-  private int getBatteryLevel() {
-    Toast ts = Toast.makeText(MainActivity.this, "getBatteryLeval",Toast.LENGTH_SHORT);
-     ts.show();
+  private int TelPhoneCall() {
+    Toast.makeText(MainActivity.this, "TelPhoneDial",Toast.LENGTH_SHORT).show();
 
 
-    int batteryLevel = -1;
+    int phonestate = -1;
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-    
+      OngoingCall.answer();
     }
-      return batteryLevel;
+      return phonestate;
   }
 
 
