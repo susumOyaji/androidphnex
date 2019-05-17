@@ -44,16 +44,16 @@ class _MyHomePageState extends State<MyHomePage> {
   String _androidphone = 'Unknown androidphone.';
 
   Future<void> _getphonestate() async {
-    String androidphone;
+    String phonestate;
     try {
       final int result = await platform.invokeMethod('androidphone');
-      androidphone = 'androidphone atate at $result % .';
+      phonestate = 'androidphone atate at $result % .';
     } on PlatformException catch (e) {
-      androidphone = "Failed to get androidphone: '${e.message}'.";
+      phonestate = "Failed to get androidphone: '${e.message}'.";
     }
 
     setState(() {
-      _androidphone = androidphone;
+      _androidphone = phonestate;
     });
   }
 

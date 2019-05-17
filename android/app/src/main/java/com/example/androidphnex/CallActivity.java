@@ -31,7 +31,7 @@ public class CallActivity extends  Activity {
 
         //answer = findViewById(R.id.answer);
         //hangup = findViewById(R.id.hangup);
-        //callInfo = findViewById(R.id.callInfo);
+        //callInfo = "124567890";findViewById(R.id.callInfo);
 
         number = getIntent().getData().getSchemeSpecificPart();
     }

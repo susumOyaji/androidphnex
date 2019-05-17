@@ -86,7 +86,7 @@ public class MainActivity extends FlutterActivity
                     public void onMethodCall(MethodCall call, Result result) {//TODO
                     Toast.makeText(MainActivity.this, "Started theMethodChannel ", Toast.LENGTH_SHORT).show();
                       if (call.method.equals("androidphone")) {
-                        int batteryLevel = TelPhoneCall();
+                        int phonestate = TelPhoneCall();
 
                         if (phonestate != -1) {
                           result.success(phonestate);
