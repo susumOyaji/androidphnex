@@ -25,7 +25,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import android.telecom.Call;
-import android.app.Activity;
 import android.content.Context;
 
 import android.telecom.Call;
