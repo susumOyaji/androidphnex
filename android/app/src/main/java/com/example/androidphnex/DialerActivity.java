@@ -70,15 +70,7 @@ public class DialerActivity extends FlutterActivity {
         }, REQUEST_CODE);
 
         offerReplacingDefaultDialer();    
-
-       
-        /*
-        square.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent click){
-                    nextSquare.setEnabled(true);
-                }
-        });
-        */
+      
 
         //phoneNumberInput.setOnEditorActionListener((v, actionId, event) -> {
         //makeCall();
@@ -108,12 +100,10 @@ public class DialerActivity extends FlutterActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         
         ArrayList<Integer> grantRes = new ArrayList<>();
-        Toast.makeText(DialerActivity.this, "onRequestPermissionsResult", Toast.LENGTH_SHORT).show();
-
         // Add every result to the array
         for (Integer grantResult: grantResults) grantRes.add(grantResult);
-
         if (requestCode == REQUEST_PERMISSION && grantRes.contains(PERMISSION_GRANTED)) {
+            Toast.makeText(DialerActivity.this, "makeCall & onRequestPermissionsResult", Toast.LENGTH_SHORT).show();
             makeCall();
         }
 
