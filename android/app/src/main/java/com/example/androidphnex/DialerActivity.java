@@ -43,6 +43,8 @@ import static android.telecom.TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE
 
 public class DialerActivity extends FlutterActivity {
     private static final String CHANNEL = "samples.flutter.io/androidphone";
+    private static  final String EXTRA_STRING = "extra_string";
+    
     String phoneNumberInput;
     String parameters;
     private static final int REQUEST_PERMISSION = 0;
@@ -79,6 +81,8 @@ public class DialerActivity extends FlutterActivity {
           new MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall call, Result result) {//TODO
+                    this.result = result;
+
                     Toast.makeText(DialerActivity.this, "Started theMethodChannel ", Toast.LENGTH_SHORT).show();
                       if (call.method.equals("androidphone")) {
                         // invokeMethodの第二引数で指定したパラメータを取得できます
@@ -121,27 +125,15 @@ public class DialerActivity extends FlutterActivity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    Bundle bundle = data.getExtras();
-
-    switch (requestCode) {
-    case 123:
-      if (resultCode == RESULT_OK) {
-        text.setText(
-            "requestCode:" + requestCode
-            + "\nresultCode:" + resultCode
-            + "\ndata:" + bundle.getString("key.StringData")
-            + bundle.getInt("key.intData"));
-      } else if (resultCode == RESULT_CANCELED) {
-        text.setText(
-            "requestCode:" + requestCode
-            + "\nresultCode:" + resultCode
-            + "\ndata:" + bundle.getString("key.canceledData"));
-      }
-      break;
-
-    default:
-      break;
-    }
+    if (requestCode == COUNT_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                // Dart側にsuccessとして結果を渡します
+                result.success("result");
+            } else {
+                // error通知(第三引数は、任意のオブジェクトを渡せます)
+                result.error("ErrorCode", "ErrorMessage", null);
+            }
+        }
   }
 
 
