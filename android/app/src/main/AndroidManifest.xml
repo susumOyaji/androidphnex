@@ -65,8 +65,5 @@
         </service>
 
         <activity android:name=".CallActivity" />
-        
-
-       
     </application>
 </manifest>

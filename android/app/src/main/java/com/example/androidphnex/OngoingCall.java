@@ -8,7 +8,7 @@ import timber.log.Timber;
 
 
 public final class OngoingCall {
-    public static final BehaviorSubject<Integer> state;
+    public  static final BehaviorSubject<Integer> state;
     private static final Call.Callback callback;
     private static Call call;
 
@@ -26,7 +26,7 @@ public final class OngoingCall {
             value.registerCallback(callback);
             state.onNext(value.getState());
         }
-
+        
         call = value;
     }
 

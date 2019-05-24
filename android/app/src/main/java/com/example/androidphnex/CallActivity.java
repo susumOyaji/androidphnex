@@ -22,16 +22,20 @@ public class CallActivity extends  Activity {
     private CompositeDisposable disposables = new CompositeDisposable();
     private String number;
     private Button answer, hangup;
-    private TextView callInfo;
+    private static TextView callInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(res.layout.activity_call);
 
-        //answer = findViewById(R.id.answer);
-        //hangup = findViewById(R.id.hangup);
-        //callInfo = "124567890";findViewById(R.id.callInfo);
+        Toast.makeText(CallActivity.this, "CallActivity", Toast.LENGTH_SHORT).show();
+
+
+        setContentView(R.layout.activity_call);
+
+        answer = findViewById(R.id.answer);
+        hangup = findViewById(R.id.hangup);
+        callInfo = findViewById(R.id.callInfo);
 
         number = getIntent().getData().getSchemeSpecificPart();
     }
@@ -42,7 +46,6 @@ public class CallActivity extends  Activity {
         super.onStart();
 
         answer.setOnClickListener(v -> OngoingCall.answer());
-
         hangup.setOnClickListener(v -> OngoingCall.hangup());
 
         // Subscribe to state change -> call updateUi when change
@@ -66,17 +69,31 @@ public class CallActivity extends  Activity {
         finish();
     }
 
+    
+    public CharSequence getCallInfo(){
+        CharSequence anser = callInfo.getText();
+        Toast.makeText(CallActivity.this, "getCallInfo" + anser, Toast.LENGTH_SHORT).show();
+        
+        return anser;
+    }
+    
+
+
     // Set the UI for the call
     @SuppressLint("SetTextI18n")
     public void updateUi(Integer state) {
+        Toast.makeText(CallActivity.this, "updateUi", Toast.LENGTH_SHORT).show();
         // Set callInfo text by the state
-        callInfo.setText(CallStateString.asString(state).toLowerCase()+"\n"+"\n"+number);
+        callInfo.setText(CallStateString.asString(state).toLowerCase() +"\n"+number);
+        
+        
 
         if (state == Call.STATE_RINGING)
             answer.setVisibility(View.VISIBLE);
         else
             answer.setVisibility(View.GONE);
-
+        
+            
         if (state == Call.STATE_DIALING || state == Call.STATE_RINGING || state == Call.STATE_ACTIVE)
             hangup.setVisibility(View.VISIBLE);
         else

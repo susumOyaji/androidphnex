@@ -40,14 +40,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _launched;
   String _phone = '09024922369';
 
+ 
+ 
+ 
+ 
    // Get battery level.
-  String _androidphone = 'Unknown androidphone.';
+  String _androidphone = 'Dial';
 
   Future<void> _getphonestate() async {
     String phonestate;
     try {
-      final int result = await platform.invokeMethod('androidphone');
-      phonestate = 'androidphone atate at $result % .';
+      final int result = await platform.invokeMethod('androidphone',_phone);
+      phonestate = 'phone state at $result';
     } on PlatformException catch (e) {
       phonestate = "Failed to get androidphone: '${e.message}'.";
     }
@@ -74,23 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TextField(
                   onChanged: (String text) => _phone = text,
                   decoration: const InputDecoration(
-                      hintText: 'RepeatCall Telephone number')),
+                      hintText: 'incoming phonenumber')),
             ),
             RaisedButton(
               onPressed: () => setState(() {
                     _launched = _getphonestate();
                   }),
-              child: const Text('Make phone call'),
+              child: Text(_androidphone),
             ),
-            const Padding(padding: EdgeInsets.all(16.0)),
-            RaisedButton(
-              child: const Text('Call me'),
-              onPressed:() => _getphonestate(),
-            ),
-            
-           
-            const Padding(padding: EdgeInsets.all(16.0)),
-            //FutureBuilder<void>(future: _launched, builder: _launchStatus),
           ],
         ),
       ),
