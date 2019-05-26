@@ -81,16 +81,14 @@ public class DialerActivity extends FlutterActivity {
           new MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall call, Result result) {//TODO
-                    this.result = result;
-
+                    
                     Toast.makeText(DialerActivity.this, "Started theMethodChannel ", Toast.LENGTH_SHORT).show();
                       if (call.method.equals("androidphone")) {
                         // invokeMethodの第二引数で指定したパラメータを取得できます
                         parameters = (String)call.arguments;
-                        int phonestate = makeCall(parameters);
+                        String phonestate = makeCall(parameters);
                         
-
-                        if (phonestate != -1) {
+                        if (phonestate != null) {
                           result.success(phonestate);
                         } else {
                           result.error("UNAVAILABLE", "AndroidPhone not available.", null);
@@ -99,8 +97,6 @@ public class DialerActivity extends FlutterActivity {
                         result.notImplemented();
                       } // TODO
                      
-                      //  val parameters = call.arguments<String>();
-
                     }
                 }
           );
@@ -110,31 +106,9 @@ public class DialerActivity extends FlutterActivity {
     public void onStart() {
         super.onStart();
          offerReplacingDefaultDialer();  
-
-        //phoneNumberInput.setOnEditorActionListener((v, actionId, event) -> {
-        //makeCall();
-        //   return true;
-        //});
     }
 
-     // startActivityForResult で起動させたアクティビティが
-  // finish() により破棄されたときにコールされる
-  // requestCode : startActivityForResult の第二引数で指定した値が渡される
-  // resultCode : 起動先のActivity.setResult の第一引数が渡される
-  // Intent data : 起動先Activityから送られてくる Intent
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == COUNT_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                // Dart側にsuccessとして結果を渡します
-                result.success("result");
-            } else {
-                // error通知(第三引数は、任意のオブジェクトを渡せます)
-                result.error("ErrorCode", "ErrorMessage", null);
-            }
-        }
-  }
+  
 
 
 
@@ -143,7 +117,7 @@ public class DialerActivity extends FlutterActivity {
 
 
     @SuppressLint("MissingPermission")
-    public int makeCall(String _phone) {
+    public String makeCall(String _phone) {
         // If permission to call is granted
         if (checkSelfPermission(CALL_PHONE) == PERMISSION_GRANTED) {
             // Create the Uri from phoneNumberInput
@@ -155,12 +129,11 @@ public class DialerActivity extends FlutterActivity {
             // Request permission to call
             ActivityCompat.requestPermissions(this, new String[]{CALL_PHONE}, REQUEST_PERMISSION);
         }
-        //Toast.makeText(DialerActivity.this, "makeCall     " + _phone, Toast.LENGTH_SHORT).show();
-       
-        //CharSequence tv = CallActivity.getCallInfo();
-        Toast.makeText(DialerActivity.this, "onRequestPermissionsResult" , Toast.LENGTH_SHORT).show();
+             
+        String tv = CallActivity.PhoneState;
+        Toast.makeText(DialerActivity.this, "makeCall  " + tv , Toast.LENGTH_SHORT).show();
         
-        return 1;//tv;//buttonHidden.setText(CallStateString.asString(OngoingCall.state));
+        return tv;
 
     }
 
@@ -180,27 +153,12 @@ public class DialerActivity extends FlutterActivity {
 
 
 
-
-
-
     //ユーザーが自分のアプリをデフォルトの電話アプリとして設定する
     private void offerReplacingDefaultDialer() {
         TelecomManager systemService = this.getSystemService(TelecomManager.class);
         if (systemService != null && !systemService.getDefaultDialerPackage().equals(this.getPackageName())) {
         startActivity((new Intent(ACTION_CHANGE_DEFAULT_DIALER)).putExtra(EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, this.getPackageName()));
         }
-
-        /*ユーザーが自分のアプリをデフォルトの電話アプリとして設定する
-        if (getSystemService(TelecomManager::class.java).defaultDialerPackage != packageName) {
-            Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER)
-            .putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
-            .let(::startActivity)
-        }
-        */
-
-
-
-        //Toast.makeText(DialerActivity.this, "offerReplacingDefaultDialer", Toast.LENGTH_SHORT).show();
     }
 
 

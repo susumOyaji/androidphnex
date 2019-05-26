@@ -23,16 +23,15 @@ public class CallActivity extends  Activity {
     private String number;
     private Button answer, hangup;
     private static TextView callInfo;
+    public  static String PhoneState;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Toast.makeText(CallActivity.this, "CallActivity", Toast.LENGTH_SHORT).show();
-
-
+        
         setContentView(R.layout.activity_call);
-
         answer = findViewById(R.id.answer);
         hangup = findViewById(R.id.hangup);
         callInfo = findViewById(R.id.callInfo);
@@ -68,30 +67,23 @@ public class CallActivity extends  Activity {
     void finish(Integer state){
         finish();
     }
-
-    
-    public CharSequence getCallInfo(){
-        CharSequence anser = callInfo.getText();
-        Toast.makeText(CallActivity.this, "getCallInfo" + anser, Toast.LENGTH_SHORT).show();
-        
-        return anser;
-    }
     
 
 
     // Set the UI for the call
     @SuppressLint("SetTextI18n")
     public void updateUi(Integer state) {
-        Toast.makeText(CallActivity.this, "updateUi", Toast.LENGTH_SHORT).show();
-        // Set callInfo text by the state
-        callInfo.setText(CallStateString.asString(state).toLowerCase() +"\n"+number);
+        Toast.makeText(CallActivity.this, "updateUi    " + state, Toast.LENGTH_SHORT).show();
         
+        // Set callInfo text by the state
+        callInfo.setText(CallStateString.asString(state).toLowerCase() +"   "+number);
+        PhoneState = callInfo.getText().toString();
         
 
         if (state == Call.STATE_RINGING)
-            answer.setVisibility(View.VISIBLE);
+            answer.setVisibility(View.VISIBLE);// ボタンを表示する
         else
-            answer.setVisibility(View.GONE);
+            answer.setVisibility(View.GONE);// ボタンを非表示にする
         
             
         if (state == Call.STATE_DIALING || state == Call.STATE_RINGING || state == Call.STATE_ACTIVE)

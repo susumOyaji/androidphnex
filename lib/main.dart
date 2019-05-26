@@ -45,12 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
  
  
    // Get battery level.
-  String _androidphone = 'Dial';
+  String  _androidphone = 'Dial';
 
   Future<void> _getphonestate() async {
     String phonestate;
     try {
-      final int result = await platform.invokeMethod('androidphone',_phone);
+      final String result = await platform.invokeMethod('androidphone',_phone);
       phonestate = 'phone state at $result';
     } on PlatformException catch (e) {
       phonestate = "Failed to get androidphone: '${e.message}'.";
@@ -78,7 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TextField(
                   onChanged: (String text) => _phone = text,
                   decoration: const InputDecoration(
-                      hintText: 'incoming phonenumber')),
+                      labelText: "incoming phonenumber",
+                      hintText: "{_androidphone}")),
             ),
             RaisedButton(
               onPressed: () => setState(() {
