@@ -21,7 +21,7 @@ public class CallActivity extends  Activity {
 
     private CompositeDisposable disposables = new CompositeDisposable();
     private String number;
-    private Button answer, hangup;
+    private static Button answer, hangup;
     private static TextView callInfo;
     public  static String PhoneState;
 
@@ -35,9 +35,12 @@ public class CallActivity extends  Activity {
         answer = findViewById(R.id.answer);
         hangup = findViewById(R.id.hangup);
         callInfo = findViewById(R.id.callInfo);
-
+       
         number = getIntent().getData().getSchemeSpecificPart();
     }
+
+
+
 
     @SuppressLint("CheckResult")
     @Override
@@ -61,13 +64,13 @@ public class CallActivity extends  Activity {
                 .subscribe(this::finish);
 
         disposables.add(disposable2);
+       
     }
 
     // Call to Activity finish
     void finish(Integer state){
         finish();
     }
-    
 
 
     // Set the UI for the call
@@ -90,6 +93,8 @@ public class CallActivity extends  Activity {
             hangup.setVisibility(View.VISIBLE);
         else
             hangup.setVisibility(View.GONE);
+
+           
     }
 
 
@@ -105,5 +110,11 @@ public class CallActivity extends  Activity {
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .setData(call.getDetails().getHandle()));
     }
+
+
+ 
+
+   
+
 
 }

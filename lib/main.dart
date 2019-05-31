@@ -37,15 +37,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static const platform = const MethodChannel('samples.flutter.io/androidphone');
-  Future<void> _launched;
+  //Future<void> _launched;
   String _phone = '09024922369';
 
- 
- 
- 
- 
-   // Get battery level.
+  // Get state.
   String  _androidphone = 'Dial';
+  String _hangstate = "HangUp";
+
+  //void setState() async {
+      //_androidphone = phonestate;
+      //_hangstate = hangupstate;
+  //}
 
   Future<void> _getphonestate() async {
     String phonestate;
@@ -55,11 +57,30 @@ class _MyHomePageState extends State<MyHomePage> {
     } on PlatformException catch (e) {
       phonestate = "Failed to get androidphone: '${e.message}'.";
     }
-
+    
     setState(() {
       _androidphone = phonestate;
-    });
+      //_hangstate = hangupstate;
+      });
   }
+
+
+
+  Future<void> _hangupstate() async {
+    String hangupstate;
+    try {
+      final String result = await platform.invokeMethod('hangup',true);
+      hangupstate = 'phone state at $result';
+    } on PlatformException catch (e) {
+      hangupstate = "Failed to get androidphone: '${e.message}'.";
+    }
+  
+    //setState(() {
+    // _hangstate = hangupstate;
+    //});
+  }
+
+  
 
 
 
@@ -83,7 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             RaisedButton(
               onPressed: () => setState(() {
-                    _launched = _getphonestate();
+                    _hangupstate();
+                  }),
+              child: Text(_hangstate),
+            ),
+            RaisedButton(
+              onPressed: () => setState(() {
+                    _getphonestate();
                   }),
               child: Text(_androidphone),
             ),
@@ -92,7 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
 }
-
-
 //flutter create --org com.sumitomo --template=plugin -i swift -a java ticketcall
