@@ -2,10 +2,8 @@ package com.example.androidphnex;
 
 
 import android.telecom.Call;
-
 import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
-
 
 public final class OngoingCall {
     public  static final BehaviorSubject<Integer> state;
@@ -37,7 +35,7 @@ public final class OngoingCall {
 
     // Hangup the call
     public static void hangup() {
-        call.disconnect();
+       call.disconnect();
     }
 
     static {

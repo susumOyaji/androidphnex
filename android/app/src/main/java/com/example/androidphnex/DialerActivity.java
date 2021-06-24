@@ -4,7 +4,6 @@ import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
-
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.plugin.common.MethodCall;
@@ -44,9 +43,12 @@ import static android.telecom.TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE
 public class DialerActivity extends FlutterActivity {
     private static final String CHANNEL = "samples.flutter.io/androidphone";
     private static  final String EXTRA_STRING = "extra_string";
-    
+    //CallActivity callActivity = new CallActivity();
+     
     String phoneNumberInput;
     String parameters;
+    
+
     private static final int REQUEST_PERMISSION = 0;
     static final int REQUEST_CODE = 1;
     private static final int REQUEST_ID = 1;
@@ -76,26 +78,57 @@ public class DialerActivity extends FlutterActivity {
         
         
         
-        new App();
+        //new App();
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(
           new MethodCallHandler() {
                     @Override
                     public void onMethodCall(MethodCall call, Result result) {//TODO
-                    
-                    Toast.makeText(DialerActivity.this, "Started theMethodChannel ", Toast.LENGTH_SHORT).show();
                       if (call.method.equals("androidphone")) {
+                        Toast.makeText(DialerActivity.this, "Started theMethodChannel to makeCall", Toast.LENGTH_SHORT).show();
+
                         // invokeMethodの第二引数で指定したパラメータを取得できます
-                        parameters = (String)call.arguments;
+                        parameters = call.arguments.toString();
                         String phonestate = makeCall(parameters);
                         
                         if (phonestate != null) {
-                          result.success(phonestate);
+                          result.success(phonestate);//return to Flutter
                         } else {
                           result.error("UNAVAILABLE", "AndroidPhone not available.", null);
                         }
                       } else {
+                              if (call.method.equals("hangup")) {
+                                Toast.makeText(DialerActivity.this, "Started theMethodChannel to hangup ", Toast.LENGTH_SHORT).show();
+                                // invokeMethodの第二引数で指定したパラメータを取得できます
+                                boolean hangupparameters = (boolean)call.arguments;
+                                boolean hangup = hangup(hangupparameters);
+                        
+                                if (hangup != true) {
+                                  result.success(hangup);
+                                } else {
+                                  result.error("UNAVAILABLE", "Hangup not available.", null);
+                                }
+                              } else {
+                                result.notImplemented();//該当するメソッドが実装されていない
+                              } // TOD
+                      } // TODO
+
+
+                     /*
+                      if (call.method.equals("hangup")) {
+                        Toast.makeText(DialerActivity.this, "Started theMethodChannel to hangup ", Toast.LENGTH_SHORT).show();
+                        // invokeMethodの第二引数で指定したパラメータを取得できます
+                        boolean hangupparameters = (boolean)call.arguments;
+                        boolean hangup = hangup(hangupparameters);
+                        
+                        if (hangup != true) {
+                          result.success(hangup);
+                        } else {
+                          result.error("UNAVAILABLE", "Hangup not available.", null);
+                        }
+                      } else {
                         result.notImplemented();
                       } // TODO
+                      */
                      
                     }
                 }
@@ -134,8 +167,19 @@ public class DialerActivity extends FlutterActivity {
         Toast.makeText(DialerActivity.this, "makeCall  " + tv , Toast.LENGTH_SHORT).show();
         
         return tv;
-
     }
+
+   
+    public boolean hangup(boolean hangup) {
+      Toast.makeText(DialerActivity.this, "hangup  to True ", Toast.LENGTH_SHORT).show();
+      //CallActivity.onHangup();
+      OngoingCall.hangup();
+      return true;
+    }
+
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
